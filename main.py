@@ -14,11 +14,11 @@ def connect_to_db():
 
      
 
-def get_client_info(client_id):
+def get_client_info(table_name,client_id):
     try:
         conn = connect_to_db()
         cursor = conn.cursor()
-        sql = f" SELECT * FROM assessment.client_credentials WHERE client_id = {client_id};"
+        sql = f" SELECT * FROM assessment.{table_name} WHERE client_id = {client_id};"
         cursor.execute(sql)
         client = cursor.fetchall()
         conn.close()
@@ -30,16 +30,16 @@ def get_client_info(client_id):
 
 
 
-def update_client_data(client_id, client_field, data):
+def update_client_data(table_name,client_id, client_field, data):
     try:
         conn = connect_to_db()
         cursor = conn.cursor()
-        sql = f"UPDATE assessment.client_credentials SET {client_field} = '{data}' WHERE client_id = {client_id};"
+        sql = f"UPDATE assessment.{table_name} SET {client_field} = '{data}' WHERE client_id = {client_id};"
         cursor.execute(sql)
         print('table updated')
         conn.commit()
         conn.close()
-        client = get_client_info(client_id)
+        client = get_client_info(table_name,client_id)
         return client
     except:
         print('An exception occured')
@@ -47,8 +47,8 @@ def update_client_data(client_id, client_field, data):
         
 
 
-print(get_client_info(120))
+print(get_client_info('client_credentials_ii',120))
 
-print(update_client_data(client_id=100, client_field='last_name', data='Barefeet'))
+print(update_client_data('client_credentials_ii',client_id=100, client_field='clientname', data='Jason Barefeet'))
 
-print(update_client_data(client_id=100, client_field='last_name', data='Barefoot'))
+print(update_client_data('client_credentials_ii',client_id=100, client_field='clientname', data='Jason Barefoot'))
